@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Calculator</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #3a3a3a, #1c1c1c);
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .calculator {
+    background: #2c2c2c; 
+    padding: 20px 20px 25px 20px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    width: 280px;
+  }
+
+  #display {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    text-align: right;
+    padding: 8px 6px;
+    border-radius: 10px;
+    border: none;
+    background: #1c1c1c; 
+    color: #fff;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 60px;
+    gap: 8px;
+  }
+
+  button {
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+  }
+
+  .number { background: #444; }
+  .number:hover { background: #555; }
+
+  .operator { background: #ff9500; }
+  .operator:hover { background: #e68a00; }
+
+  .clear { background: #ff3b30; }
+  .clear:hover { background: #e02a20; }
+
+  .equals { 
+    background: #34c759; 
+    grid-row: span 3;
+  }
+  .equals:hover { background: #28a745; }
+
+</style>
+</head>
+<body>
+
+<div class="calculator">
+  <input type="text" id="display" disabled value="0">
+  <div class="buttons">
+    <button class="clear" onclick="clearDisplay()">C</button>
+    <button class="operator" onclick="appendOperator('/')">/</button>
+    <button class="operator" onclick="appendOperator('*')">*</button>
+    <button class="operator" onclick="appendOperator('-')">-</button>
+
+    <button class="number" onclick="appendNumber('7')">7</button>
+    <button class="number" onclick="appendNumber('8')">8</button>
+    <button class="number" onclick="appendNumber('9')">9</button>
+    <button class="operator" onclick="appendOperator('+')">+</button>
+
+    <button class="number" onclick="appendNumber('4')">4</button>
+    <button class="number" onclick="appendNumber('5')">5</button>
+    <button class="number" onclick="appendNumber('6')">6</button>
+    <button class="equals" onclick="calculateResult()">=</button>
+
+    <button class="number" onclick="appendNumber('1')">1</button>
+    <button class="number" onclick="appendNumber('2')">2</button>
+    <button class="number" onclick="appendNumber('3')">3</button>
+    <button class="number" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+    <button class="number" onclick="appendNumber('.')">.</button>
+  </div>
+</div>
+
+<script>
+  const display = document.getElementById('display');
+  let currentInput = '';
+
+  function appendNumber(number) {
+    if (currentInput === '0' && number !== '.') currentInput = number;
+    else currentInput += number;
+    display.value = currentInput;
+  }
+
+  function appendOperator(operator) {
+    if (currentInput === '') return;
+    const lastChar = currentInput.slice(-1);
+    if ('+-*/'.includes(lastChar)) return;
+    currentInput += operator;
+    display.value = currentInput;
+  }
+
+  function clearDisplay() {
+    currentInput = '';
+    display.value = '0';
+  }
+
+  function calculateResult() {
+    try {
+      currentInput = eval(currentInput).toString();
+      display.value = currentInput;
+    } catch {
+      display.value = 'Error';
+      currentInput = '';
+    }
+  }
+</script>
+
+</body>
+</html>
